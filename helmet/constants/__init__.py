@@ -40,7 +40,7 @@ TRAINED_MODEL_NAME = 'model.pt'
 TRAINED_BATCH_SIZE = 2
 TRAINED_SHUFFLE = False
 TRAINED_NUM_WORKERS = 4
-EPOCH = 10
+EPOCH = 1
 
 # Model evaluation constants
 MODEL_EVALUATION_ARTIFACTS_DIR = 'ModelEvaluationArtifacts'

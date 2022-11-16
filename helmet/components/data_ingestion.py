@@ -1,15 +1,13 @@
 import os
 import sys
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
 from helmet.entity.config_entity import DataIngestionConfig
 from helmet.entity.artifacts_entity import DataIngestionArtifacts
 from helmet.configuration.s3_operations import S3Operation
 from helmet.exception import HelmetException
 from helmet.logger import logging
 from helmet.constants import *
-from PIL import Image
-import numpy as np
-import shutil
+
 
 
 class DataIngestion:
@@ -29,7 +27,7 @@ class DataIngestion:
         except Exception as e:
             raise HelmetException(e, sys) from e
 
-    def unzip_and_clean(self) -> None:
+    def unzip_and_clean(self) :
         logging.info("Entered the unzip_and_clean method of Data ingestion class")
         try:
             with ZipFile(self.data_ingestion_config.ZIP_FILE_PATH, 'r') as zip_ref:

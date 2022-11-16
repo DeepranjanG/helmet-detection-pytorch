@@ -114,9 +114,11 @@ class TrainPipeline:
             model_trainer_artifact = self.start_model_trainer(
                 data_transformation_artifact=data_transformation_artifact
             )
-            # model_evaluation_artifact = self.start_model_evaluation(model_trainer_artifact=model_trainer_artifact,
-            #                                                         data_transformation_artifact=data_transformation_artifact
-            # )
+            model_evaluation_artifact = self.start_model_evaluation(model_trainer_artifact=model_trainer_artifact,
+                                                                    data_transformation_artifact=data_transformation_artifact
+            )
+            if not model_evaluation_artifact.is_model_accepted:
+                raise Exception("Trained model is not better than the best model")
             model_pusher_artifact = self.start_model_pusher(s3=self.s3_operations)
             logging.info("Exited the run_pipeline method of TrainPipeline class")
             

@@ -92,9 +92,9 @@ class ModelTrainer:
             train_dataset = load_object(self.data_transformation_artifacts.transformed_train_object)
 
             train_loader = DataLoader(train_dataset,
-                                     batch_size=self.model_trainer_config.BATCH_SIZE, 
-                                     shuffle=self.model_trainer_config.SHUFFLE, 
-                                     num_workers=self.model_trainer_config.NUM_WORKERS, 
+                                     batch_size=self.model_trainer_config.BATCH_SIZE,
+                                     shuffle=self.model_trainer_config.SHUFFLE,
+                                     num_workers=self.model_trainer_config.NUM_WORKERS,
                                      collate_fn=self.collate_fn
                                      )
 

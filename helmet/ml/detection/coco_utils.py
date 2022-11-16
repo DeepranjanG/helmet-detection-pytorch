@@ -8,7 +8,7 @@ import torchvision
 import helmet.ml.detection.transforms as T
 from pycocotools import mask as coco_mask
 from pycocotools.coco import COCO
-from helmet.exception import VehicleException
+from helmet.exception import HelmetException
 
 
 class FilterAndRemapCocoCategories:
@@ -197,7 +197,7 @@ def convert_to_coco_api(ds):
         coco_ds.createIndex()
         return coco_ds
     except Exception as e:
-        raise Exception(e, sys) from e
+        raise HelmetException(e, sys) from e
 
 
 def get_coco_api_from_dataset(dataset):

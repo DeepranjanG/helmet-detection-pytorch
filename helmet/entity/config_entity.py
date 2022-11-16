@@ -5,7 +5,6 @@ from helmet.configuration.s3_operations import S3Operation
 import os
 
 
-
 @dataclass
 class DataIngestionConfig:
     def __init__(self):
@@ -36,6 +35,7 @@ class DataTransformationConfig:
         self.TRAIN_SPLIT = DATA_TRANSFORMATION_TRAIN_SPLIT
         self.TEST_SPLIT = DATA_TRANSFORMATION_TEST_SPLIT
 
+
 @dataclass
 class ModelTrainerConfig:
      def __init__(self):
@@ -46,15 +46,16 @@ class ModelTrainerConfig:
         self.NUM_WORKERS = TRAINED_NUM_WORKERS
         self.EPOCH: int = EPOCH
         self.DEVICE = DEVICE 
-        
+
+
 @dataclass
 class ModelEvaluationConfig:
     def __init__(self):
-        self.DEVICE = DEVICE 
-        self.TEST_LOSS: int = 0
-        self.TEST_ACCURACY: int = 0
-        self.TOTAL: int = 0
-        self.TOTAL_BATCH: int = 0
+        self.EVALUATED_MODEL_DIR: str = os.path.join(from_root(), ARTIFACTS_DIR, MODEL_EVALUATION_ARTIFACTS_DIR)
+        self.EVALUATED_LOSS_CSV_PATH = os.path.join(self.EVALUATED_MODEL_DIR, MODEL_EVALUATION_FILE_NAME)
+        self.DEVICE = DEVICE
+        self.BATCH: int = 1
+
 
 # Model Pusher Configurations
 @dataclass

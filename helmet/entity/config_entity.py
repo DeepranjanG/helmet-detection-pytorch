@@ -53,8 +53,11 @@ class ModelEvaluationConfig:
     def __init__(self):
         self.EVALUATED_MODEL_DIR: str = os.path.join(from_root(), ARTIFACTS_DIR, MODEL_EVALUATION_ARTIFACTS_DIR)
         self.EVALUATED_LOSS_CSV_PATH = os.path.join(self.EVALUATED_MODEL_DIR, MODEL_EVALUATION_FILE_NAME)
+        self.BEST_MODEL_PATH = os.path.join(self.EVALUATED_MODEL_DIR, TRAINED_MODEL_NAME )
         self.DEVICE = DEVICE
         self.BATCH: int = 1
+        self.SHUFFLE: bool = TRAINED_SHUFFLE
+        self.NUM_WORKERS = TRAINED_NUM_WORKERS
 
 
 # Model Pusher Configurations

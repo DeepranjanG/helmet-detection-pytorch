@@ -13,6 +13,7 @@ from helmet.utils.main_utils import load_object
 from helmet.ml.models.model_optimiser import model_optimiser
 from helmet.entity.config_entity import ModelTrainerConfig
 from helmet.entity.artifacts_entity import DataTransformationArtifacts, ModelTrainerArtifacts
+from helmet.ml.detection.engine import train_one_epoch, evaluate
 
 
 class ModelTrainer:
@@ -98,6 +99,15 @@ class ModelTrainer:
                                      collate_fn=self.collate_fn
                                      )
 
+            test_dataset = load_object(self.data_transformation_artifacts.transformed_test_object)
+
+            test_loader = DataLoader(test_dataset,
+                                      batch_size=1,
+                                      shuffle=self.model_trainer_config.SHUFFLE,
+                                      num_workers=self.model_trainer_config.NUM_WORKERS,
+                                      collate_fn=self.collate_fn
+                                      )
+
             logging.info("Loaded training data loader object")
 
             model = models.detection.fasterrcnn_mobilenet_v3_large_fpn(pretrained=True)
@@ -113,7 +123,9 @@ class ModelTrainer:
             logging.info("loaded optimiser")
 
             for epoch in range(self.model_trainer_config.EPOCH):
-                self.train(model, optimiser, train_loader, self.model_trainer_config.DEVICE, epoch)
+                # self.train(model, optimiser, train_loader, self.model_trainer_config.DEVICE, epoch)
+
+                train_one_epoch(model, optimiser, train_loader, self.model_trainer_config.DEVICE, epoch, print_freq=10)
 
             os.makedirs(self.model_trainer_config.TRAINED_MODEL_DIR, exist_ok=True)
             torch.save(model, self.model_trainer_config.TRAINED_MODEL_PATH)

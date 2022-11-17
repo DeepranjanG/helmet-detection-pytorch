@@ -11,7 +11,7 @@ from helmet.constants import *
 from helmet.logger import logging
 from helmet.exception import HelmetException
 from helmet.utils.main_utils import load_object
-from helmet.entity.config_entity import ModelEvaluationConfig, ModelTrainerConfig
+from helmet.entity.config_entity import ModelEvaluationConfig
 from helmet.configuration.s3_operations import S3Operation
 from helmet.entity.artifacts_entity import ModelTrainerArtifacts, DataTransformationArtifacts, ModelEvaluationArtifacts
 
@@ -19,12 +19,10 @@ from helmet.entity.artifacts_entity import ModelTrainerArtifacts, DataTransforma
 class ModelEvaluation:
 
     def __init__(self, model_evaluation_config:ModelEvaluationConfig,
-                 model_trainer_config:ModelTrainerConfig,
                 data_transformation_artifacts:DataTransformationArtifacts,
                 model_trainer_artifacts:ModelTrainerArtifacts):
 
         self.model_evaluation_config = model_evaluation_config
-        self.model_trainer_config = model_trainer_config
         self.data_transformation_artifacts = data_transformation_artifacts
         self.model_trainer_artifacts = model_trainer_artifacts
         self.s3 = S3Operation()
@@ -51,8 +49,7 @@ class ModelEvaluation:
         logging.info("Entered the get_model_from_s3 method of PredictionPipeline class")
         try:
             # Loading the best model from s3 bucket
-            os.makedirs("artifacts/PredictModel", exist_ok=True)
-            predict_model_path = os.path.join(os.getcwd(), "artifacts", "PredictModel", TRAINED_MODEL_NAME)
+            predict_model_path = self.model_evaluation_config.BEST_MODEL_PATH
             best_model_path = self.s3.read_data_from_s3(TRAINED_MODEL_NAME, self.bucket_name, predict_model_path)
             logging.info("Exited the get_model_from_s3 method of PredictionPipeline class")
             return best_model_path
@@ -115,8 +112,8 @@ class ModelEvaluation:
 
             test_loader = DataLoader(test_dataset,
                                       batch_size=self.model_evaluation_config.BATCH,
-                                      shuffle=self.model_trainer_config.SHUFFLE,
-                                      num_workers=self.model_trainer_config.NUM_WORKERS,
+                                      shuffle=self.model_evaluation_config.SHUFFLE,
+                                      num_workers=self.model_evaluation_config.NUM_WORKERS,
                                       collate_fn=self.collate_fn
                                       )
 

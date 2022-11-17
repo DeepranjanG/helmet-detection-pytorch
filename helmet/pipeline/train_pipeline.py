@@ -11,7 +11,6 @@ from helmet.entity.artifacts_entity import DataIngestionArtifacts, DataTransform
 from helmet.logger import logging
 
 
-
 class TrainPipeline:
     def __init__(self):
         self.data_ingestion_config = DataIngestionConfig()
@@ -77,7 +76,6 @@ class TrainPipeline:
         try:
             model_evaluation = ModelEvaluation(data_transformation_artifacts = data_transformation_artifact,
                                                 model_evaluation_config=self.model_evaluation_config,
-                                               model_trainer_config=self.model_trainer_config,
                                                 model_trainer_artifacts=model_trainer_artifact)
 
             model_evaluation_artifact = model_evaluation.initiate_model_evaluation()
@@ -86,7 +84,6 @@ class TrainPipeline:
 
         except Exception as e:
             raise HelmetException(e, sys) from e
-
 
     def start_model_pusher(self,s3: S3Operation,) -> ModelPusherArtifacts:
         logging.info("Entered the start_model_pusher method of TrainPipeline class")
